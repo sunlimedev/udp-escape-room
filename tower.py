@@ -1,13 +1,18 @@
 from socket import *
 
+# select port for udp
 server_port = 12000
 
+# create server socket to receive data
 server_socket = socket(AF_INET, SOCK_DGRAM)
 
+# connect server socket to chosen port
 server_socket.bind(('', server_port))
 
-print('The radio tower is transmitting on several frequencies.')
+# once this prints the udp server is ready to respond
+print('The radio tower is transmitting on several frequencies.\n')
 
+# dictionary storing transmissions for each frequency
 transmission_pairs = {
     90.0 : "from radio: -=s-=-o-==-h=--y=-i-=-da-==Ju=-==o=-==-=-=-o-=-a-l=--==-f-=-=a=bu=-=-e-=-=t--\n",
     90.5 : "from radio: -=sh=-o-=a-h=-py=-ir=hda-==Ju=-==o=-yo-=-=ro-=-ayl=---wif-=-=a=bu=-=Re-=-=t-s\n",
@@ -32,7 +37,16 @@ transmission_pairs = {
     100.0: "from radio: -==-=--t-=-=-=-=--=-==-=-=-=h-=-a==-=-==---=--=-=-=-=--\n"
 }
 
+# response loop
 while True:
+    # get client frequency
     freq, client_address = server_socket.recvfrom(2048)
+
+    # print this to show the udp server working
+    print("Someone is listening to the radio...\n")
+
+    # get the radio transmission from the dictionary
     radio_transmission = transmission_pairs[float(freq.decode())]
+
+    # send the radio transmission to client (like a radio tower)
     server_socket.sendto(radio_transmission.encode(), client_address)
