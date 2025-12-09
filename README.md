@@ -6,7 +6,7 @@ This code was written entirely by me. There is no AI code in this project. Gemin
 # How to Play
 1. Move all project files into a Python project in your preferred IDE.
 2. Ensure that the Python packages listed at the top of `tower.py` and `receiver.py` are installed on your system or in your virtual environment.
-3. Adjust the `server_ip` variable on line 244 of `receiver.py` to reflect the ip address of the device running `tower.py`.
+3. Adjust the `server_ip` variable in the `connection_info()` function to reflect the ip address of the device running `tower.py`.
 4. Run `tower.py`, then run `receiver.py`.
 
 # References
