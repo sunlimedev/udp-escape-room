@@ -1,7 +1,7 @@
 # UDP Escape Room
 This project was developed to utilize the User Datagram Protocol in an interesting way. Gather clues from an alarm clock radio to escape the room you've found yourself in. You may need to look up a few things.
 
-This project was developed for CMPEN 461 at Penn State Behrend. This code was written entirely by me. There is no AI code in this project. Gemini Nano Banana Pro was used to create the lock images and alarm clock image. The images were modified after generation.
+This code was written entirely by me. There is no AI code in this project. Gemini Nano Banana Pro was used to create the lock images and alarm clock image. The images were modified after generation.
 
 # How to Play
 1. Move all project files into a Python project in your preferred IDE.
