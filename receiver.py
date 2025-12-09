@@ -3,14 +3,98 @@ import cv2
 from time import sleep
 
 
+def connection_info():
+    # set tower (server) ip address
+    server_ip = '192.168.0.0'
+
+    # set server port
+    server_port = 12000
+
+    # create client socket
+    client_socket = socket(AF_INET, SOCK_DGRAM)
+
+    return server_ip, server_port, client_socket
+
+
+def load_images():
+    # get the images ready prior to starting
+    img_locked = cv2.imread('locked_gemini.png')
+    img_alarm_clock = cv2.imread('alarm_clock_gemini.png')
+    img_unlocked = cv2.imread('unlocked_gemini.png')
+
+    return img_locked, img_alarm_clock, img_unlocked
+
+
+def build_freq_dict_list():
+    # dictionary for displaying clock frequency slider in terminal ( frequency : string_index )
+    freq_pairs = {
+        90.0: 8,
+        90.5: 10,
+        91.0: 13,
+        91.5: 16,
+        92.0: 18,
+        92.5: 20,
+        93.0: 23,
+        93.5: 26,
+        94.0: 28,
+        94.5: 30,
+        95.0: 33,
+        95.5: 36,
+        96.0: 38,
+        96.5: 40,
+        97.0: 43,
+        97.5: 46,
+        98.0: 48,
+        98.5: 50,
+        99.0: 53,
+        99.5: 56,
+        100.0: 58
+    }
+
+    # list of accepted frequencies
+    allowed_freq = [90.0, 90.5, 91.0, 91.5, 92.0, 92.5, 93.0, 93.5, 94.0, 94.5, 95.0, 95.5, 96.0, 96.5, 97.0, 97.5, 98.0, 98.5, 99.0, 99.5, 100.0]
+
+    return freq_pairs, allowed_freq
+
+
+def build_clock():
+    # list for clock ascii strings
+    clock_ascii = [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
+
+    # ascii alarm clock used as gemini prompt
+    clock_ascii[0] = "╔═══════════════════════════════════════════════════════════════════════════════════╗"
+    clock_ascii[1] = "║     CASIO    Alarm Clock w/ FM Receiver                                           ║"
+    clock_ascii[2] = "╠═══════════════════════════════════════════════════════════════════════════════════╣"
+    clock_ascii[3] = "║                                                                                   ║"
+    clock_ascii[4] = "║                                                                                  ║"
+    clock_ascii[5] = "║       | -  =  - | -  =  - | -  =  - | -  =  - | -  =  - |         TUNE (.5 MHz)   ║"
+    clock_ascii[6] = "║                                                                     _________     ║"
+    clock_ascii[7] = "║  FM  90.       92.       94.       96.       98.       100. MHz    |    o    |    ║"
+    clock_ascii[8] = "║                                                                    |         |    ║"
+    clock_ascii[9] = "║                           -  ---     ---  ---                      |         |    ║"
+    clock_ascii[10] = "║        [am]               |  | |  o    |  | |                      |         |    ║"
+    clock_ascii[11] = "║                           |  | |     ---  ---                      |_________|    ║"
+    clock_ascii[12] = "║        [  ]               |  | |  o  |    | |                                     ║"
+    clock_ascii[13] = "║                           -  ---     ---  ---                                     ║"
+    clock_ascii[14] = "╚═══════════════════════════════════════════════════════════════════════════════════╝"
+    clock_ascii[15] = "    ╚══════╝                                                             ╚══════╝\n"
+
+    # return built clock matrix to main function
+    return clock_ascii
+
+
 def print_clock(clock_ascii, freq, freq_pairs):
+    # place slider on the line
     freq_slider_string = clock_ascii[4][:freq_pairs[freq]] + '█' + clock_ascii[4][freq_pairs[freq]:]
 
+    # print the lines above the slider line
     for i in range(0,4):
         print(clock_ascii[i])
 
+    # print the slider line
     print(freq_slider_string)
 
+    # print the lines below the slider line
     for i in range(5, 16):
         print(clock_ascii[i])
 
@@ -119,7 +203,9 @@ def puzzle_loop(allowed_freq, clock_ascii, freq_pairs, server_ip, server_port, c
         print_clock(clock_ascii, float(new_freq), freq_pairs)
         sleep(5)
 
+        # convert frequency float to string
         new_freq = str(new_freq)
+
         # send frequency string to radio tower (server)
         client_socket.sendto(new_freq.encode(), (server_ip, server_port))
 
@@ -157,6 +243,7 @@ def conclude_story(img_locked, img_unlocked):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
+    # lists for checking player answers
     player_nums = [None, None, None]
     correct_nums = ["22", "19", "3"]
 
@@ -185,70 +272,27 @@ def conclude_story(img_locked, img_unlocked):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-    print("You open the door and escape your concrete prison.\n")
+    print("You open the door and escape, never to return to this mysterious place.\n")
     sleep(3)
 
 
 def main():
     ############################## 0 - prepping variables ##############################
 
-    # get the images ready prior to starting
-    img_locked = cv2.imread('locked_gemini.png')
-    img_alarm_clock = cv2.imread('alarm_clock_gemini.png')
-    img_unlocked = cv2.imread('unlocked_gemini.png')
+    # get story images
+    img_locked, img_alarm_clock, img_unlocked = load_images()
 
-    # dictionary for displaying clock in terminal ( frequency : string_index )
-    freq_pairs = {
-        90.0 : 8,
-        90.5 : 10,
-        91.0 : 13,
-        91.5 : 16,
-        92.0 : 18,
-        92.5 : 20,
-        93.0 : 23,
-        93.5 : 26,
-        94.0 : 28,
-        94.5 : 30,
-        95.0 : 33,
-        95.5 : 36,
-        96.0 : 38,
-        96.5 : 40,
-        97.0 : 43,
-        97.5 : 46,
-        98.0 : 48,
-        98.5 : 50,
-        99.0 : 53,
-        99.5 : 56,
-        100.0: 58
-    }
+    # get frequency dictionary and list
+    freq_pairs, allowed_freq = build_freq_dict_list()
 
-    # list for clock ascii strings
-    clock_ascii = [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
+    # get clock ascii art
+    clock_ascii = build_clock()
 
-    # ascii alarm clock used as gemini prompt
-    clock_ascii[0] = "╔═══════════════════════════════════════════════════════════════════════════════════╗"
-    clock_ascii[1] = "║     CASIO    Alarm Clock w/ FM Receiver                                           ║"
-    clock_ascii[2] = "╠═══════════════════════════════════════════════════════════════════════════════════╣"
-    clock_ascii[3] = "║                                                                                   ║"
-    clock_ascii[4] = "║                                                                                  ║"
-    clock_ascii[5] = "║       | -  =  - | -  =  - | -  =  - | -  =  - | -  =  - |         TUNE (.5 MHz)   ║"
-    clock_ascii[6] = "║                                                                     _________     ║"
-    clock_ascii[7] = "║  FM  90.       92.       94.       96.       98.       100. MHz    |    o    |    ║"
-    clock_ascii[8] = "║                                                                    |         |    ║"
-    clock_ascii[9]  = "║                           -  ---     ---  ---                      |         |    ║"
-    clock_ascii[10] = "║        [am]               |  | |  o    |  | |                      |         |    ║"
-    clock_ascii[11] = "║                           |  | |     ---  ---                      |_________|    ║"
-    clock_ascii[12] = "║        [  ]               |  | |  o  |    | |                                     ║"
-    clock_ascii[13] = "║                           -  ---     ---  ---                                     ║"
-    clock_ascii[14] = "╚═══════════════════════════════════════════════════════════════════════════════════╝"
-    clock_ascii[15] = "    ╚══════╝                                                             ╚══════╝    \n"
+    # get udp socket information
+    server_ip, server_port, client_socket = connection_info()
 
-    allowed_freq = [90.0, 90.5, 91.0, 91.5, 92.0, 92.5, 93.0, 93.5, 94.0, 94.5, 95.0, 95.5, 96.0, 96.5, 97.0, 97.5, 98.0, 98.5, 99.0, 99.5, 100.0]
-
-    server_ip = '192.168.1.100'
-    server_port = 12000
-
-    client_socket = socket(AF_INET, SOCK_DGRAM)
+    # check udp connection
+    # verify_server(server_ip, server_port, client_socket)
 
     ############################## 1 - story intro ##############################
 
@@ -268,7 +312,7 @@ def main():
     # run puzzle loop with udp
     puzzle_loop(allowed_freq, clock_ascii, freq_pairs, server_ip, server_port, client_socket)
 
-    # close udp connection
+    # close udp connection when loop is broken
     client_socket.close()
 
     ############################## 4 - go to unlock ##############################
