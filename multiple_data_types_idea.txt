@@ -1,0 +1,32 @@
+def verify_server(server_ip, server_port, client_socket):
+    try:
+        # special key for the server to confirm ('U' for udp)
+        key = 'U'
+
+        # send frequency string to radio tower (server)
+        client_socket.sendto(key.encode(), (server_ip, server_port))
+
+        # receive confirmation
+        radio_transmission, server_address = client_socket.recvfrom(2048)
+
+        # print radio transmission
+        print(radio_transmission.decode())
+        sleep(1)
+    except ValueError:
+        # server 
+        print("Error: Invalid value encountered.")
+
+    # special key for the server to confirm ('U' for udp)
+    key = 'U'
+
+    # send frequency string to radio tower (server)
+    client_socket.sendto(key.encode(), (server_ip, server_port))
+
+    # receive confirmation
+    radio_transmission, server_address = client_socket.recvfrom(2048)
+
+    # print radio transmission
+    print(radio_transmission.decode())
+    sleep(1)
+
+
