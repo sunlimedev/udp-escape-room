@@ -57,7 +57,7 @@ def puzzle_tutorial(player_name, clock_ascii, freq_pairs):
     # set starting freq = 96.5
     freq = 96.5
     print_clock(clock_ascii, freq, freq_pairs)
-    sleep(6)
+    sleep(3)
 
     print("You mess with the dial, setting the frequency to 97.0MHz.\n")
     sleep(3)
@@ -65,18 +65,17 @@ def puzzle_tutorial(player_name, clock_ascii, freq_pairs):
     # set new freq = 97.0
     freq = 97.0
     print_clock(clock_ascii, freq, freq_pairs)
-    sleep(6)
+    sleep(5)
 
     # print 97.0MHz string
     print("from radio: -=t-n=-on=-=-ere=-==a=mi-=i-=-p=rson-=-=th-=-ame=---=-=-=-=-=f==ou-hav-===y=-=-orm--==-=-p-eas===-nta==-Em=r=-nc----rvic=--\n")
-    sleep(7.5)
+    sleep(6)
 
     print("You rotate the dial to the right even more, setting the frequency to 97.5MHz. The signal seems to be improving in this direction.\n")
-    sleep(7.5)
+    sleep(7)
 
     # adjust clock to 10:29
     clock_ascii[12] = "║        [  ]               |  | |  o  |      |                                     ║"
-
 
     # set new freq = 97.5
     freq = 97.5
@@ -86,7 +85,7 @@ def puzzle_tutorial(player_name, clock_ascii, freq_pairs):
     print(f"from radio: Attention! There is a missing person by the name of {player_name}. If you have any information, please contact Emergency Services.\n")
     sleep(7)
 
-    print("It sounds like you have people searching for you, but you doubt they'll be able to find you in this room.\n")
+    print("It sounds like there are people searching for you, but you doubt they'll be able to find you in this room.\n")
     sleep(6)
 
     print("There are lots of other frequencies. You might be able to gather some clues to escape this room.\n")
@@ -99,6 +98,11 @@ def puzzle_tutorial(player_name, clock_ascii, freq_pairs):
 def puzzle_loop(allowed_freq, clock_ascii, freq_pairs, server_ip, server_port, client_socket):
     # create progress check to move to open the lock
     progress_check = [0, 0, 0]
+
+    # adjust clock time
+    clock_ascii[10] = "║        [am]               |  | |  o    |  | |                      |         |    ║"
+    clock_ascii[11] = "║                           |  | |     ---  | |                      |_________|    ║"
+    clock_ascii[12] = "║        [  ]               |  | |  o    |  | |                                     ║"
 
     while True:
         # get player set frequency
@@ -260,11 +264,6 @@ def main():
     puzzle_tutorial(player_name, clock_ascii, freq_pairs)
 
     ############################## 3 - run puzzle loop ##############################
-
-    # adjust clock time
-    clock_ascii[10] = "║        [am]               |  | |  o    |  | |                      |         |    ║"
-    clock_ascii[11] = "║                           |  | |     ---  | |                      |_________|    ║"
-    clock_ascii[12] = "║        [  ]               |  | |  o    |  | |                                     ║"
 
     # run puzzle loop with udp
     puzzle_loop(allowed_freq, clock_ascii, freq_pairs, server_ip, server_port, client_socket)
