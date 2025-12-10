@@ -9,7 +9,7 @@ In the game, the radio tower transmits a message to the alarm clock radio depend
 This analogy is somewhat flawed since a real radio tower does not receive any information from a radio receiver. With that said, the radio transmitter/receiver relationship is far more like UDP than TCP, because a radio transmitter and receiver do not establish and verify a connection prior to exchanging information.
 
 # How to Play
-1. Move all project files into a Python project in your preferred IDE.
+1. Move all project files into a project folder.
 2. Ensure that the Python packages listed at the top of `tower.py` and `receiver.py` are installed on your system or in your virtual environment.
 3. Adjust the `server_ip` variable in the `connection_info()` function to reflect the ip address of the device running `tower.py`.
 4. Run `tower.py`, then run `receiver.py`.
