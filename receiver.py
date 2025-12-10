@@ -79,7 +79,6 @@ def build_clock():
     clock_ascii[14] = "╚═══════════════════════════════════════════════════════════════════════════════════╝"
     clock_ascii[15] = "    ╚══════╝                                                             ╚══════╝\n"
 
-    # return built clock matrix to main function
     return clock_ascii
 
 
