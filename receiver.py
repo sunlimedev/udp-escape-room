@@ -188,19 +188,30 @@ def puzzle_loop(allowed_freq, clock_ascii, freq_pairs, server_ip, server_port, c
     clock_ascii[11] = "║                           |  | |     ---  | |                      |_________|    ║"
     clock_ascii[12] = "║        [  ]               |  | |  o    |  | |                                     ║"
 
+    # start puzzle loop, stopping when all clues have been found (91.0, 93.5, 99.0)
     while True:
-        # get player set frequency
-        new_freq = float(input("You listen to the radio for a moment after tuning it to: "))
-        print("")
-
-        # make sure frequency is valid
-        while new_freq not in allowed_freq:
-            print("After thinking about it, you aren't sure the receiver will accept that frequency.\n")
-            new_freq = float(input("You listen to the radio for a moment after tuning it to: "))
+        # error handling prior to sending frequency to server
+        while True:
+            # get new frequency from player
+            new_freq = input("You listen to the radio for a moment after tuning it to: ")
             print("")
 
+            # ensure entered frequency can become a float
+            try:
+                new_freq = float(new_freq)
+            except ValueError:
+                print("After thinking about it, you aren't sure the receiver will accept that frequency.\n")
+                continue
+
+            # ensure entered frequency is on the clock
+            if new_freq not in allowed_freq:
+                print("After thinking about it, you aren't sure the receiver will accept that frequency.\n")
+                continue
+            else:
+                break
+
         # print clock with new frequency
-        print_clock(clock_ascii, float(new_freq), freq_pairs)
+        print_clock(clock_ascii, new_freq, freq_pairs)
         sleep(5)
 
         # convert frequency float to string
