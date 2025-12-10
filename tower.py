@@ -37,6 +37,10 @@ transmission_pairs = {
     100.0: "from radio: -==-=--t-=-=-=-=--=-==-=-=-=h-=-a==-=-==---=--=-=-=-=--\n"
 }
 
+# arrays for request tracking
+clients = []
+num_requests = []
+
 # response loop
 while True:
     # get client frequency
@@ -45,8 +49,21 @@ while True:
     # print this to show the udp server working
     print("Someone is listening to the radio...\n")
 
+    # track num of connections by address
+    if client_address not in clients:
+        clients.append(client_address)
+        num_requests.append(1)
+        index = clients.index(client_address)
+    else:
+        index = clients.index(client_address)
+        num_requests[index] += 1
+
     # get the radio transmission from the dictionary
     radio_transmission = transmission_pairs[float(freq.decode())]
+
+    # provide hint to client if they exceed 21 frequency changes
+    if num_requests[index] == 21:
+        radio_transmission += "\nYou decide to go through each frequency one-by-one after tuning the radio aimlessly for some time.\n"
 
     # send the radio transmission to client (like a radio tower)
     server_socket.sendto(radio_transmission.encode(), client_address)
