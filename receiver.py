@@ -5,7 +5,7 @@ from time import sleep
 
 def connection_info():
     # set tower (server) ip address
-    server_ip = '192.168.0.0'
+    server_ip = '192.168.1.100'
 
     # set server port
     server_port = 12000
@@ -244,20 +244,21 @@ def conclude_story(img_locked, img_unlocked):
     cv2.destroyAllWindows()
 
     # lists for checking player answers
-    player_nums = [None, None, None]
+    player_nums = [" ", " ", " "]
     correct_nums = ["22", "19", "3"]
 
     while True:
+        # prompt player for lock sequence
         print("You try a new sequence of numbers on the lock.\n")
         sleep(1)
 
-        player_nums[0] = input("First you twist the lock to the right, stopping on the number: ")
+        player_nums[0] = input("First, you twist the lock to the right, stopping on the number: ")
         print("")
 
-        player_nums[1] = input("Second you twist the lock to the left, stopping on the number: ")
+        player_nums[1] = input("Then, you twist the lock to the left, stopping on the number: ")
         print("")
 
-        player_nums[2] = input("Third you twist the lock to the right, stopping on the number: ")
+        player_nums[2] = input("Finally, you twist the lock to the right, stopping on the number: ")
         print("")
 
         # check answers
@@ -290,9 +291,6 @@ def main():
 
     # get udp socket information
     server_ip, server_port, client_socket = connection_info()
-
-    # check udp connection
-    # verify_server(server_ip, server_port, client_socket)
 
     ############################## 1 - story intro ##############################
 
