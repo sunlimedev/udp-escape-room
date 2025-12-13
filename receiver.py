@@ -5,7 +5,7 @@ from time import sleep
 
 def connection_info():
     # set tower (server) ip address
-    server_ip = '192.168.1.100'
+    server_ip = input("Server IP address: ")
 
     # set server port
     server_port = 12000
@@ -101,7 +101,7 @@ def print_clock(clock_ascii, freq, freq_pairs):
 def story_intro(img_locked, img_alarm_clock, clock_ascii, freq_pairs):
     # introduce setting
     print("\nYou wake up in a room with concrete walls. The door to exit is locked. There is a window, but you can tell you are many stories up.\n")
-    sleep(5)
+    sleep(2.5)
 
     # show lock
     cv2.imshow('The door is locked.', img_locked)
@@ -155,7 +155,7 @@ def puzzle_tutorial(player_name, clock_ascii, freq_pairs):
     sleep(6)
 
     print("You rotate the dial to the right even more, setting the frequency to 97.5MHz. The signal seems to be improving in this direction.\n")
-    sleep(7)
+    sleep(6)
 
     # adjust clock to 10:29
     clock_ascii[12] = "║        [  ]               |  | |  o  |      |                                     ║"
@@ -163,19 +163,19 @@ def puzzle_tutorial(player_name, clock_ascii, freq_pairs):
     # set new freq = 97.5
     freq = 97.5
     print_clock(clock_ascii, freq, freq_pairs)
-    sleep(6)
+    sleep(3)
 
     print(f"from radio: Attention! There is a missing person by the name of {player_name}. If you have any information, please contact Emergency Services.\n")
-    sleep(7)
+    sleep(5)
 
     print("It sounds like there are people searching for you, but you doubt they'll be able to find you in this room.\n")
-    sleep(6)
+    sleep(4)
 
     print("There are lots of other frequencies. You might be able to gather some clues to escape this room.\n")
-    sleep(6)
+    sleep(4)
 
     print("Using the tuner you can set the alarm clock to frequencies between 90.0 and 100.0 in increments of 0.5.\n")
-    sleep(5)
+    sleep(4)
 
 
 def puzzle_loop(allowed_freq, clock_ascii, freq_pairs, server_ip, server_port, client_socket):
@@ -305,7 +305,7 @@ def main():
     ############################## 1 - story intro ##############################
 
     # get player name for immersion
-    player_name = input("Enter your name: ")
+    player_name = input("Your name is: ")
 
     # run story intro
     story_intro(img_locked, img_alarm_clock, clock_ascii, freq_pairs)
